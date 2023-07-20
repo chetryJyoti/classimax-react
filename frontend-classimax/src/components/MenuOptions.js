@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { FormControl, Select, MenuItem } from "@mui/material";
-import useStyles from "./NavStyles";
-
+import { Link } from "react-router-dom";
 const MenuOptions = ({ options }) => {
-  const classes = useStyles();
   const [link, setLink] = useState(options[0].value);
 
   const handleChange = (event) => {
@@ -24,7 +22,7 @@ const MenuOptions = ({ options }) => {
       >
         {options.map((option) => (
           <MenuItem key={option.value} value={option.value}>
-            {option.name}
+            <Link to={option?.loc} style={{ textDecoration: 'none', color: 'inherit' }} >{option.name}</Link>
           </MenuItem>
         ))}
       </Select>

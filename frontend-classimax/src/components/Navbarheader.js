@@ -5,32 +5,33 @@ import useStyles from "./NavStyles";
 import MenuOptions from "./MenuOptions";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import MenuItem from "@mui/icons-material/Menu";
+import { Link } from "react-router-dom";
 const Navbar = () => {
   const classes = useStyles();
   const dashboardOptions = [
-    { value: 1, name: "Dashboard" },
-    { value: 2, name: "Dashboard My Ads" },
-    { value: 3, name: "Dashboard Favourite Ads" },
-    { value: 4, name: "Dashboard Archived Ads" },
-    { value: 5, name: "Dashboard Pending Ads" },
+    { value: 1, name: "Dashboard", loc: "/dashboard" },
+    { value: 2, name: "Dashboard My Ads", loc: "/dashboard" },
+    { value: 3, name: "Dashboard Favourite Ads", loc: "/dashboard" },
+    { value: 4, name: "Dashboard Archived Ads", loc: "/dashboard" },
+    { value: 5, name: "Dashboard Pending Ads", loc: "/dashboard" },
   ];
   const pagesOptions = [
     { value: 6, name: "Pages" },
-    { value: 7, name: "About Us" },
-    { value: 8, name: "Contact Us" },
-    { value: 9, name: "User Profile" },
-    { value: 10, name: "404 Page" },
-    { value: 11, name: "Package " },
-    { value: 12, name: "Single Page" },
-    { value: 13, name: "Store Single" },
-    { value: 14, name: "Single Post" },
-    { value: 15, name: "Blog" },
+    { value: 7, name: "About Us", loc: "/aboutus" },
+    { value: 8, name: "Contact Us", loc: "/contactus" },
+    { value: 9, name: "User Profile", loc: "/userProfile" },
+    { value: 10, name: "404 Page", loc: "/notFound" },
+    { value: 11, name: "Package ", loc: "/package" },
+    { value: 12, name: "Single Page", loc: "/singlePage" },
+    { value: 13, name: "Store Single", loc: "/storeSingle" },
+    { value: 14, name: "Single Post", loc: "/singlePost" },
+    { value: 15, name: "Blog", loc: "/blog" },
   ];
 
   const listingOptions = [
     { value: 16, name: "Listing" },
-    { value: 17, name: "Add Grid View" },
-    { value: 18, name: "Add List View" },
+    { value: 17, name: "Add Grid View", loc: "/listing" },
+    { value: 18, name: "Add List View", loc: "/listing" },
   ];
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -55,10 +56,13 @@ const Navbar = () => {
               }}
             >
               <Box sx={{ mt: { xs: 2, sm: 2 } }}>
+                <Link to="/">
                 <img src={logo} alt="Logo" />
+                </Link>
+                
               </Box>
               <Box sx={{ display: { xs: "block", sm: "block", md: "none" } }}>
-                <Button variant="contained" onClick={handleMenuClick}>
+                <Button variant="text" onClick={handleMenuClick}>
                   <MenuItem />
                 </Button>
               </Box>
@@ -93,7 +97,7 @@ const Navbar = () => {
                 <MenuOptions options={listingOptions} />
               </Box>
             </Grid>
-            <Grid item xs={12} sm={12} md={2}>
+            <Grid item xs={6} sm={6} md={2}>
               <Box
                 sx={{
                   ml: { xs: 0, sm: 0, md: 2 },
@@ -103,7 +107,7 @@ const Navbar = () => {
                 <Button variant="outlined">Login</Button>
               </Box>
             </Grid>
-            <Grid item xs={12} sm={12} md={2}>
+            <Grid item xs={6} sm={6} md={2}>
               <Box
                 sx={{
                   ml: { xs: 0, sm: 0, md: 2 },
