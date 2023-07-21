@@ -5,10 +5,11 @@ import googleStoreImg from "../assets/apps/google-play-store.png";
 import phoneIconImg from "../assets/footer/phone-icon.png";
 import logofooter from "../assets/logo-footer.png";
 import { makeStyles } from "@mui/styles";
-const useStyles = makeStyles((theme) => ({
+
+const useStyles = makeStyles(() => ({
   footer: {
-    background: "#333", 
-    color: "#fff", 
+    background: "#333",
+    color: "#fff",
     padding: "50px 30px",
   },
   about: {
@@ -24,17 +25,18 @@ const useStyles = makeStyles((theme) => ({
       margin: 0,
     },
     "& li": {
-      marginBottom: "1px",
+      marginBottom: "6px",
       color: "gray",
       fontSize: "14px",
       fontWeight: "400",
+
     },
     "& a": {
-      color: "gray", 
+      color: "gray",
       textDecoration: "none",
       fontSize: "14px",
       fontWeight: "400",
-      marginBottom:"2px",
+      marginBottom: "2px",
       "&:hover": {
         textDecoration: "underline",
       },
@@ -47,7 +49,11 @@ const useStyles = makeStyles((theme) => ({
   },
   downloadLinks: {
     display: "flex",
-    margin: "8px 0",
+    justifyContent: "space-between",
+    marginTop: "8px",
+  },
+  img_fluid: {
+    width: "90%",
   },
 }));
 
@@ -61,7 +67,7 @@ const Footer = () => {
           <Grid item lg={3} md={7} xs={12}>
             <div className={`${classes.about} block`}>
               <img src={logofooter} alt="footer-logo" />
-              <Typography variant="body1" fontSize={"12px"} color={"#c7c7c7"}>
+              <Typography variant="body1" fontSize={12} color="#c7c7c7">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
                 enim ad minim veniam, quis nostrud exercitation ullamco laboris
