@@ -13,8 +13,6 @@ const useStyles = makeStyles({
   categoryIcon: {
     fontSize: "24px",
     marginRight: "8px",
-    // background: "#a676b8",
-    // // boxShadow: "0 0 0px 4px rgba(166, 118, 184, 0.35)",
     color: "white",
     borderRadius: "50%",
     padding: "1px 5px",
@@ -24,16 +22,10 @@ const useStyles = makeStyles({
     borderRadius: "8px",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
     marginBottom: "32px",
+    padding:'6px'
   },
   categoryCardContent: {
     padding: "16px",
-  },
-  categoryBlock: {
-    background: "#fff",
-    borderRadius: "8px",
-    boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
-    padding: "16px",
-    marginBottom: "32px",
   },
 });
 

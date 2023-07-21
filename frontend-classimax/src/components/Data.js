@@ -152,5 +152,4 @@ export const CategoriesData = [
     background: "#025fd3",
     boxShadow: "0 0 0px 4px rgba(2, 95, 211, 0.35)",
   },
-  // Add more category objects as needed
 ];

@@ -38,6 +38,11 @@ const useStyles = makeStyles({
     color: "blue",
     marginRight: "4px",
   },
+  iconText:{
+    display:'flex',
+    alignItems:'center',
+    justifyContent:'space-between'
+  }
 });
 
 const Card = ({ option }) => {

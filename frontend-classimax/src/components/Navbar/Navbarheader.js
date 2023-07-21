@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { AppBar, Toolbar, Box, Button, Grid } from "@mui/material";
-import logo from "../assets/logo.png";
+import logo from "../../assets/logo.png";
 import useStyles from "./NavStyles";
 import MenuOptions from "./MenuOptions";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import MenuItem from "@mui/icons-material/Menu";
 import { Link } from "react-router-dom";
-const Navbar = () => {
+const Navbarheader = () => {
   const classes = useStyles();
   const dashboardOptions = [
     { value: 1, name: "Dashboard", loc: "/dashboard" },
@@ -61,8 +61,8 @@ const Navbar = () => {
                 </Link>
                 
               </Box>
-              <Box sx={{ display: { xs: "block", sm: "block", md: "none" } }}>
-                <Button variant="text" onClick={handleMenuClick}>
+              <Box sx={{ display: { xs: "block", sm: "block", md: "none" }}}>
+                <Button variant="text" onClick={handleMenuClick} >
                   <MenuItem />
                 </Button>
               </Box>
@@ -127,4 +127,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Navbarheader;

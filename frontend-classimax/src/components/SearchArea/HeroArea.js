@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
-import heroImage from "../assets/home/hero.jpg";
+import heroImage from "../../assets/home/hero.jpg";
 import {
   Container,
   Grid,

@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@mui/styles";
 import { Grid, Typography } from "@mui/material";
 import CategoryItem from "./CategoryItem";
-import {CategoriesData} from './Data'
+import {CategoriesData} from '../Data'
 const useStyles = makeStyles({
   section: {
     background: "white",
@@ -40,6 +40,7 @@ const CategorySection = () => {
                   item
                   xs={6} // On small screens, display 2 items in a row (12/6 = 2)
                   sm={3} // On larger screens, display 4 items in a row (12/3 = 4)
+                 
                 >
                   <CategoryItem {...category} />
                 </Grid>

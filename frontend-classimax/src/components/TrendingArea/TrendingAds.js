@@ -4,15 +4,14 @@ import { Container, Grid, Typography } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { TrendingData } from "./Data";
-import Card from "./Card";
+import { TrendingData } from "../Data";
+import Card from "../Card";
 const useStyles = makeStyles({
   popularDeals: {
     background: "#f0f0f0",
     textAlign: "center",
     paddingTop: "100px",
     paddingBottom: "64px",
-    // marginTop:'100px'
   },
   sectionTitle: {
     marginBottom: "32px",
