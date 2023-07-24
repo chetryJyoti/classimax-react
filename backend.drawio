@@ -1,0 +1,43 @@
+<mxfile host="app.diagrams.net" modified="2023-07-24T05:59:53.516Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36" etag="0aK11XQiGrQoCxDbH_7D" version="21.6.5" type="device">
+  <diagram name="Page-1" id="uRqLtwGiZ09msLrpEaOo">
+    <mxGraphModel dx="394" dy="452" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="mh_oIF_0Nb-9wvmbicMq-9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="mh_oIF_0Nb-9wvmbicMq-3" target="mh_oIF_0Nb-9wvmbicMq-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mh_oIF_0Nb-9wvmbicMq-3" value="Register" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="365" y="70" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mh_oIF_0Nb-9wvmbicMq-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="mh_oIF_0Nb-9wvmbicMq-5" target="mh_oIF_0Nb-9wvmbicMq-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mh_oIF_0Nb-9wvmbicMq-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="mh_oIF_0Nb-9wvmbicMq-5" target="mh_oIF_0Nb-9wvmbicMq-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="mh_oIF_0Nb-9wvmbicMq-5" value="Login" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="365" y="210" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="mh_oIF_0Nb-9wvmbicMq-7" value="Add POST" style="rounded=1;whiteSpace=wrap;html=1;arcSize=50;" vertex="1" parent="1">
+          <mxGeometry x="365" y="390" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mh_oIF_0Nb-9wvmbicMq-8" value="username(str)&lt;br&gt;email(str)&lt;br&gt;password(str)&lt;br&gt;confirm password(str)" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="510" y="50" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="mh_oIF_0Nb-9wvmbicMq-11" value="email(str)&lt;br&gt;password(str)" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="520" y="200" width="100" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="mh_oIF_0Nb-9wvmbicMq-12" value="ADD INFO:&lt;br&gt;title(str) required&lt;br&gt;category(arr) required&lt;br&gt;type - presonal or business&lt;br&gt;price(int) required&amp;nbsp;&lt;br&gt;negotiable(bool) required&lt;br&gt;desc(str) required&lt;br&gt;image(url string) required&lt;br&gt;&lt;br&gt;SELLER INFO:&lt;br&gt;name(str) required&lt;br&gt;email(str) required&lt;br&gt;number(int) required&lt;br&gt;address(str) required&lt;br&gt;&lt;br&gt;ADD FEATURING:&lt;br&gt;payment ad opitons&lt;br&gt;-regular ad ($ 0)&lt;br&gt;-top featured adds ($59)&lt;br&gt;-urgent ads($79)&lt;br&gt;&lt;br&gt;payment_details" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="520" y="335" width="190" height="345" as="geometry" />
+        </mxCell>
+        <mxCell id="mh_oIF_0Nb-9wvmbicMq-13" value="Forgot password" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mh_oIF_0Nb-9wvmbicMq-15" value="email" style="whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+          <mxGeometry x="70" y="190" width="80" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
