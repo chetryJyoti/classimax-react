@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 const AdListingsController = require('../controllers/AdListingsController');
 
+// verification of user 
+// const verifyJWT = require("../middleware/verifyJWT")
 
+// router.use(verifyJWT)
 router.route('/')
   .get(AdListingsController.getListing)
   .post(AdListingsController.createListing);

@@ -22,6 +22,10 @@ const createListing = asyncHandler(async (req, res) => {
     desc,
     images,
     payment_option,
+    name, // New seller details
+    email, // New seller details
+    number, // New seller details
+    address, // New seller details
   } = req.body;
 
   // Ensure the user exists in the User model
@@ -31,12 +35,18 @@ const createListing = asyncHandler(async (req, res) => {
   }
 
   try {
-    // Check if the seller exists
-    let existingSeller = await Seller.findById(seller);
+    let existingSeller = null;
+
+    // Check if the seller exists based on seller ID
+    if (seller) {
+      existingSeller = await Seller.findById(seller);
+    } else {
+      // Check if the seller exists based on seller details (name, email, number, address)
+      existingSeller = await Seller.findOne({ name, email, number, address });
+    }
 
     // If seller does not exist, create a new one
     if (!existingSeller) {
-      const { name, email, number, address } = req.body;
       existingSeller = await Seller.create({ name, email, number, address });
     }
 
@@ -61,6 +71,7 @@ const createListing = asyncHandler(async (req, res) => {
     });
   }
 });
+
 
 // Update an existing AdListing by ID
 const updateListingById = asyncHandler(async (req, res) => {
