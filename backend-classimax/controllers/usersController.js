@@ -1,5 +1,5 @@
 const User = require("../models/User");
-// const Note = require("../models/Note");
+
 const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 
@@ -85,30 +85,24 @@ const updateUser = asyncHandler(async (req, res) => {
   res.json({ message: `${updatedUser.username} updated` });
 });
 
-//delete method
-// const deleteUser = asyncHandler(async (req, res) => {
-//   const { id } = req.body;
-//   if (!id) {
-//     return res.status(400).json({ message: "User ID Required" });
-//   }
-//   const note = await Note.findOne({ user: id }).lean().exec();
-//   if (note) {
-//     return res
-//       .status(400)
-//       .json({ message: "User has assigned notes !!! User can't be deleted" });
-//   }
-//   const user = await User.findById(id).exec();
-//   if (!user) {
-//     return res.status(400).json({ message: "User not found" });
-//   }
-//   const result = await user.deleteOne();
-//   const reply = `Username ${result.username} with ID ${result._id} deleted`;
-//   res.json(reply);
-// });
+// delete method
+const deleteUser = asyncHandler(async (req, res) => {
+  const { id } = req.body;
+  if (!id) {
+    return res.status(400).json({ message: "User ID Required" });
+  }
+  const user = await User.findById(id).exec();
+  if (!user) {
+    return res.status(400).json({ message: "User not found" });
+  }
+  const result = await user.deleteOne();
+  const reply = `Username ${result.username} with ID ${result._id} deleted`;
+  res.json(reply);
+});
 
 module.exports = {
   getAllUsers,
   createNewUser,
   updateUser,
-//   deleteUser,
+  deleteUser,
 };

@@ -4,7 +4,12 @@ const adListingSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: 'User', //User model for sellers
+    ref: "User", //User model for sellers
+  },
+  seller: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "Seller",
   },
   title: {
     type: String,
@@ -16,7 +21,7 @@ const adListingSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['personal', 'business'],
+    enum: ["personal", "business"],
     required: true,
   },
   price: {
@@ -31,15 +36,15 @@ const adListingSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  image: {
-    type: String,
+  images: {
+    type: [String],
     required: true,
   },
   payment_option: {
     type: String,
-    enum: ['regular', 'top_featured', 'urgent'],
+    enum: ["regular", "top_featured", "urgent"],
     required: true,
   },
 });
 
-module.exports = mongoose.model('AdListing', adListingSchema);
+module.exports = mongoose.model("AdListing", adListingSchema);
