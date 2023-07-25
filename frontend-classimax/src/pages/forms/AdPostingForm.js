@@ -1,8 +1,6 @@
 import React from "react";
 import Navbarheader from "../../components/Navbar/Navbarheader";
 import AdForm from "./AdForm";
-import PaymentType from "./PaymentType";
-import SellerInfo from "./SellerInfo";
 
 
 const AdPostingForm = () => {
@@ -11,8 +9,6 @@ const AdPostingForm = () => {
     <>
       <Navbarheader />
       <AdForm />
-      <SellerInfo />
-      <PaymentType />
     </>
   );
 };

@@ -14,6 +14,7 @@ import Blog from "./pages/Blog";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import AdPostingForm from "./pages/forms/AdPostingForm";
+import Listing from "./pages/Listing"
 const App = () => {
   return (
     <>
@@ -32,6 +33,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/addListing" element={<AdPostingForm />} />
+          <Route path="/listing" element={<Listing/>}/>
         </Routes>
     </>
   );

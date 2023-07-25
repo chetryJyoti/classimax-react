@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     borderRadius: "8px",
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
     marginBottom: "32px",
-    padding:'6px'
+    padding: "6px",
   },
   categoryCardContent: {
     padding: "16px",
@@ -36,12 +36,15 @@ const CategoryItem = ({ iconClass, title, items, background, boxShadow }) => {
     <Card className={classes.categoryCard}>
       <CardContent className={classes.categoryCardContent}>
         <div className={classes.header}>
-          <div
-            className={classes.categoryIcon}
-            style={{ background, boxShadow }}
-          >
-            {iconClass}
-          </div>
+          {iconClass && (
+            <div
+              className={classes.categoryIcon}
+              style={{ background, boxShadow }}
+            >
+              {iconClass}
+            </div>
+          )}
+
           <Typography variant="h6">{title}</Typography>
         </div>
         <Typography className="category-list">

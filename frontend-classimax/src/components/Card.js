@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     marginBottom: "32px",
   },
   cardImg: {
-    width: "90%",
+    width: "100%",
   },
   productMeta: {
     display: "flex",

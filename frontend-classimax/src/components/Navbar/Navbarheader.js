@@ -121,7 +121,7 @@ const Navbarheader = () => {
                   display: { xs: menuOpen ? "block" : "none", md: "block" },
                 }}
               >
-                <Button variant="contained">
+                <Button variant="contained" size="large">
                   <AddCircleIcon />
                   <Link to="/addListing" className={classes.link}>Add Listing</Link>
                 </Button>

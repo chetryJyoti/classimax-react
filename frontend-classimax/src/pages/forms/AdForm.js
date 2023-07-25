@@ -1,58 +1,28 @@
 import React from "react";
-import { makeStyles } from "@mui/styles";
+import useStyles from "./FormStyles";
 
 import {
   TextField,
   Select,
   MenuItem,
   FormControl,
-  FormLabel,
   Grid,
   RadioGroup,
   FormControlLabel,
   Radio,
   Button,
-  Box,
   InputLabel,
   Checkbox,
   Typography,
 } from "@mui/material";
 
-const useStyles = makeStyles({
-  formContainer: {
-    border: "1px solid #ccc",
-    padding: "3rem",
-    marginBottom: "1rem",
-  },
-  formField: {
-    marginBottom: "1rem",
-    background: "white",
-  },
 
-  priceRow: {
-    display: "flex",
-    alignItems: "center",
-    marginBottom: "1rem",
-  },
-  uploadContainer: {
-    border: "1px dashed #ccc",
-    padding: "1rem",
-    borderRadius: "4px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "column",
-    textAlign: "center",
-    marginTop: "28px",
-    height: "200px",
-  },
-});
 const AdForm = () => {
   const classes = useStyles();
   return (
     <form className={classes.formContainer}>
       <Typography variant="h6">Post Your ad</Typography>
-      <Grid container spacing={2}>
+      <Grid container spacing={2} marginBottom={4}>
         <Grid item xs={12} md={6}>
           <Typography variant="subtitle1">Title Of Ad:</Typography>
           <TextField
@@ -140,34 +110,74 @@ const AdForm = () => {
             />
           </div>
         </Grid>
-
-        <Grid  item xs={12} md={6}>
-        {/* <fieldset class="border p-4 my-5 seller-information bg-gray">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h3>Seller Information</h3>
-                    </div>
-                    <div class="col-lg-6">
-                        <h6 class="font-weight-bold pt-4 pb-1">Contact Name:</h6>
-                        <input type="text" placeholder="Contact name" class="border w-100 p-2">
-                        <h6 class="font-weight-bold pt-4 pb-1">Contact Number:</h6>
-                        <input type="text" placeholder="Contact Number" class="border w-100 p-2">
-                    </div>
-                    <div class="col-lg-6">
-                        <h6 class="font-weight-bold pt-4 pb-1">Contact Name:</h6>
-                        <input type="email" placeholder="name@yourmail.com" class="border w-100 p-2">
-                        <h6 class="font-weight-bold pt-4 pb-1">Contact Name:</h6>
-                        <input type="text" placeholder="Your address" class="border w-100 p-2">
-                    </div>
-                </div>
-            </fieldset> */}
-            <Typography variant="subtitle1">Seller Information</Typography>
-            <div>
-                <div></div>
-                <div></div>
-            </div>
+      </Grid>
+      {/* seller info */}
+      <Typography variant="h6">Seller Informantion</Typography>
+      <Grid container spacing={2} marginBottom={4}>
+        <Grid item xs={12} md={6}>
+          <Typography variant="subtitle1">Contact Name:</Typography>
+          <TextField
+            variant="outlined"
+            className={classes.formField}
+            fullWidth
+            placeholder="Contact name"
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Typography variant="subtitle1">Contact Number:</Typography>
+          <TextField
+            variant="outlined"
+            className={classes.formField}
+            fullWidth
+            placeholder="Contact number"
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Typography variant="subtitle1">Contact email:</Typography>
+          <TextField
+            variant="outlined"
+            className={classes.formField}
+            fullWidth
+            placeholder="name@youremail.com"
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Typography variant="subtitle1">Contact Address:</Typography>
+          <TextField
+            variant="outlined"
+            className={classes.formField}
+            fullWidth
+            placeholder="your address"
+          />
         </Grid>
       </Grid>
+      {/* payment section */}
+      <Typography variant="h6">Make your Ad Featured</Typography>
+      <Grid container spacing={2} marginBottom={4}>
+      <Grid item xs={12} md={6}>
+          <Typography variant="subtitle1">Preminum Ad Options:</Typography>
+          <FormControl component="fieldset" className={classes.formField}>
+            <RadioGroup name="itemName">
+              <FormControlLabel
+                value="regular"
+                control={<Radio color="primary" />}
+                label="Regular Ad $00.00"
+              />
+              <FormControlLabel
+                value="top_featured"
+                control={<Radio color="primary" />}
+                label="Top Featured Ads $59.00"
+              />
+              <FormControlLabel
+                value="urgent"
+                control={<Radio color="primary" />}
+                label="Urgent Ads $59.00"
+              />
+            </RadioGroup>
+          </FormControl>
+        </Grid>
+      </Grid>
+      <Button type="submit" variant="contained">Post your Ad</Button>
     </form>
   );
 };
