@@ -3,11 +3,41 @@ const User = require("../models/User");
 const Seller = require("../models/Seller");
 const asyncHandler = require("express-async-handler");
 
-// Fetch all AdListings
+// Fetch all AdListings by pagenumber
 const getListing = asyncHandler(async (req, res) => {
-  const adListings = await AdListing.find({}).populate("user seller");
-  res.status(200).json(adListings);
+  const page = parseInt(req.query.page) || 1; // Get the page number from the query parameter (default: 1)
+  const limit = 5; // Set the number of documents to fetch per page
+
+  try {
+    // Calculate the number of documents to skip based on the current page
+    const skip = (page - 1) * limit;
+
+    // Fetch the first 10 AdListings based on pagination
+    const adListings = await AdListing.find({})
+      .skip(skip)
+      .limit(limit)
+      .populate("user seller");
+
+    // Get the total count of AdListing documents
+    const totalCount = await AdListing.countDocuments();
+
+    // Calculate the total number of pages
+    const totalPages = Math.ceil(totalCount / limit);
+
+    res.status(200).json({
+      page,
+      totalPages,
+      totalCount,
+      adListings,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch AdListings",
+      error: error.message,
+    });
+  }
 });
+
 
 // Create a new AdListing
 const createListing = asyncHandler(async (req, res) => {
