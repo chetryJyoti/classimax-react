@@ -57,12 +57,11 @@ const Navbarheader = () => {
             >
               <Box sx={{ mt: { xs: 2, sm: 2 } }}>
                 <Link to="/">
-                <img src={logo} alt="Logo" />
+                  <img src={logo} alt="Logo" />
                 </Link>
-                
               </Box>
-              <Box sx={{ display: { xs: "block", sm: "block", md: "none" }}}>
-                <Button variant="text" onClick={handleMenuClick} >
+              <Box sx={{ display: { xs: "block", sm: "block", md: "none" } }}>
+                <Button variant="text" onClick={handleMenuClick}>
                   <MenuItem />
                 </Button>
               </Box>
@@ -97,17 +96,25 @@ const Navbarheader = () => {
                 <MenuOptions options={listingOptions} />
               </Box>
             </Grid>
-            <Grid item xs={6} sm={6} md={2}>
+            <Grid item xs={6} sm={6} md={2} marginBottom={1}>
               <Box
                 sx={{
                   ml: { xs: 0, sm: 0, md: 2 },
                   display: { xs: menuOpen ? "block" : "none", md: "block" },
                 }}
               >
-                <Button variant="outlined">Login</Button>
+                <Button variant="outlined">
+                  {" "}
+                  <Link
+                    to="/login"
+                    className={classes.link}
+                  >
+                    Login
+                  </Link>
+                </Button>
               </Box>
             </Grid>
-            <Grid item xs={6} sm={6} md={2}>
+            <Grid item xs={6} sm={6} md={2} marginBottom={1}>
               <Box
                 sx={{
                   ml: { xs: 0, sm: 0, md: 2 },
@@ -116,7 +123,7 @@ const Navbarheader = () => {
               >
                 <Button variant="contained">
                   <AddCircleIcon />
-                  Add Listing
+                  <Link to="/addListing" className={classes.link}>Add Listing</Link>
                 </Button>
               </Box>
             </Grid>

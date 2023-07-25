@@ -16,10 +16,10 @@ const useStyles = makeStyles(() => ({
   cardAction: {
     marginBottom: "4px",
   },
-  // RESPONSIVE GIRD 
-
- 
-
+  link: {
+    textDecoration: "none",
+    color: "inherit",
+  },
 }));
 
 export default useStyles;

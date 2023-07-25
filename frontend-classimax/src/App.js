@@ -13,7 +13,7 @@ import StoreSingle from "./pages/StoreSingle";
 import Blog from "./pages/Blog";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import AddListing from "./pages/forms/AddListing";
+import AdPostingForm from "./pages/forms/AdPostingForm";
 const App = () => {
   return (
     <>
@@ -31,7 +31,7 @@ const App = () => {
           <Route path="/blog" element={<Blog />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/addListing" element={<AddListing />} />
+          <Route path="/addListing" element={<AdPostingForm />} />
         </Routes>
     </>
   );
