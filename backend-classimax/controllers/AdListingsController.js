@@ -12,7 +12,7 @@ const getListing = asyncHandler(async (req, res) => {
     // Calculate the number of documents to skip based on the current page
     const skip = (page - 1) * limit;
 
-    // Fetch the first 10 AdListings based on pagination
+    // Fetch the first 5 AdListings based on pagination
     const adListings = await AdListing.find({})
       .skip(skip)
       .limit(limit)
@@ -192,6 +192,72 @@ const getAllListingByUser = asyncHandler(async (req, res) => {
   res.status(200).json(adListings);
 });
 
+// Get all AdListings by Category name
+const getAllListingByCategory = asyncHandler(async (req, res) => {
+  const category = req.params.categoryName;
+  console.log("categoryName:", category);
+
+  try {
+    const adListings = await AdListing.find({ category }).populate("user seller");
+    console.log(adListings);
+
+    if (adListings.length === 0) {
+      return res.status(404).json({ message: "AdListings not found for this category" });
+    }
+
+    res.status(200).json(adListings);
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to fetch AdListings by category",
+      error: error.message,
+    });
+  }
+});
+
+//Get the count of listings in each category
+const getCountOfListingsInEachCategory = asyncHandler(async (req, res) => {
+  const categories = ['Iphone','Electronics' ,'android', 'monitors', 'books', 'laptops', 'bed tables'];
+
+  try {
+    const categoryCounts = await AdListing.aggregate([
+      {
+        $match: {
+          category: { $in: categories }, // Only include documents with categories in the 'categories' array
+        },
+      },
+      {
+        $group: {
+          _id: '$category', // Group by the 'category' field
+          count: { $sum: 1 }, // Calculate the count of listings in each category
+        },
+      },
+      {
+        $project: {
+          _id: 0, // Exclude the default '_id' field from the result
+          category: '$_id', // Rename '_id' to 'category' for a more meaningful key
+          count: 1, // Include the 'count' field
+        },
+      },
+    ]);
+
+    // Create an object to hold the response data with category names as keys and their counts as values
+    const responseData = {};
+    for (const item of categoryCounts) {
+      responseData[item.category] = item.count;
+    }
+
+    res.status(200).json(responseData);
+  } catch (error) {
+    res.status(500).json({
+      message: 'Failed to get category counts',
+      error: error.message,
+    });
+  }
+});
+
+
+
+
 module.exports = {
   getListing,
   createListing,
@@ -199,4 +265,6 @@ module.exports = {
   deleteListingById,
   getListingById,
   getAllListingByUser,
+  getAllListingByCategory,
+  getCountOfListingsInEachCategory
 };
