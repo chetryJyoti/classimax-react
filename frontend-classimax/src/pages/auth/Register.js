@@ -1,15 +1,96 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import { TextField, Button, FormControlLabel, Checkbox } from "@mui/material";
 import Navbarheader from "../../components/Navbar/Navbarheader";
 import { Link } from "react-router-dom";
 import useStyles from "./AuthStyles";
 
+import { ToastContainer, toast } from "react-toastify";
 const Register = () => {
   const classes = useStyles();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [acceptTerms, setAcceptTerms] = useState(false);
+
+  const handleChange = (event) => {
+    const { name, value, checked } = event.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+    if (name === "acceptTerms") {
+      setAcceptTerms(checked);
+    }
+  };
+  const isPasswordMatch = () => {
+    return formData.password === formData.confirmPassword;
+  };
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!acceptTerms) {
+      // User has not accepted the terms and conditions, prevent form submission
+      return;
+    }
+    if (!isPasswordMatch()) {
+      // Passwords do not match, display an error message and prevent form submission
+      toast.error("Passwords do not match!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
+    const { email, password } = formData;
+    console.log("username:", email);
+    console.log("pass:", password);
+    try {
+      const { email, password } = formData;
+      const userData = {
+        username: email,
+        password: password,
+      };
+
+      const response = await axios.post("http://localhost:3500/users", 
+        userData,
+      );
+
+      // Handle successful registration here, e.g., show a success message, redirect to a success page, etc.
+      console.log("Registration successful:", response.data);
+      toast.success("Registration successful!", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    } catch (error) {
+      // Handle registration error here, e.g., show an error message, log the error, etc.
+
+      console.error("Registration failed:", error.response.data.message);
+      toast.error(error.response.data.message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
+  };
+
   return (
     <>
       <Navbarheader />
-      <form className={classes.formContainer}>
+      <ToastContainer />
+      <form className={classes.formContainer} onSubmit={handleSubmit}>
         <div className={classes.formField}>
           <h3
             style={{
@@ -21,7 +102,14 @@ const Register = () => {
           >
             Register Now
           </h3>
-          <TextField label="Email*" variant="outlined" fullWidth />
+          <TextField
+            label="Email*"
+            variant="outlined"
+            fullWidth
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+          />
         </div>
         <div className={classes.formField}>
           <TextField
@@ -29,6 +117,9 @@ const Register = () => {
             label="Password*"
             variant="outlined"
             fullWidth
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
           />
         </div>
         <div className={classes.formField}>
@@ -37,10 +128,20 @@ const Register = () => {
             label="Confirm Password*"
             variant="outlined"
             fullWidth
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
           />
         </div>
         <FormControlLabel
-          control={<Checkbox color="primary" />}
+          control={
+            <Checkbox
+              color="primary"
+              name="acceptTerms"
+              checked={acceptTerms}
+              onChange={handleChange}
+            />
+          }
           label="By registering, you accept our Terms & Conditions"
           className={classes.formField}
         />
@@ -50,12 +151,13 @@ const Register = () => {
           color="primary"
           fullWidth
           className={classes.submitButton}
+          disabled={!acceptTerms}
         >
-          Register Now
+          Register
         </Button>
       </form>
       <div className={classes.down}>
-        <p>Already have a account? </p>
+        <p>Already have an account? </p>
         <Link to="/login" className={classes.link}>
           Login
         </Link>
