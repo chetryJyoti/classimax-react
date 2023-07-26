@@ -7,9 +7,6 @@ import ContactUs from "./pages/ContactUs";
 import UserProfile from "./pages/UserProfile";
 import NotFound from "./pages/NotFound";
 import Package from "./pages/Package";
-import SinglePage from "./pages/SinglePage";
-import SinglePost from "./pages/SinglePost";
-import StoreSingle from "./pages/StoreSingle";
 import Blog from "./pages/Blog";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
@@ -26,9 +23,6 @@ const App = () => {
           <Route path="/userProfile" element={<UserProfile />} />
           <Route path="/notFound" element={<NotFound />} />
           <Route path="/package" element={<Package />} />
-          <Route path="/singlePost" element={<SinglePost />} />
-          <Route path="/singlePage" element={<SinglePage />} />
-          <Route path="/storeSingle" element={<StoreSingle />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

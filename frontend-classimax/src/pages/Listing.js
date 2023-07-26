@@ -4,6 +4,8 @@ import SearchBar from "../components/SearchArea/SearchBar";
 import Card from "../components/Card";
 import about from "../assets/about/about.jpg";
 import CategoryItem from "../components/CategoryArea/CategoryItem";
+import Footer from "../components/Footer"
+import { Box, Grid, Pagination, Slider, Typography,MenuItem,Select,InputLabel,FormControl } from "@mui/material";
 const cardData = [
   {
     value: about,
@@ -58,25 +60,8 @@ const Listing = () => {
     <div>
       <Navbarheader />
       <SearchBar />
-
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          padding:"20px",
-          marginTop:'40px',
-          gap:'40px'
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginTop: "30px",
-            gap:'16px',
-            border:'2px solid red'
-          }}
-        >
+      <Grid container spacing={2} padding={4} marginTop={6}>
+        <Grid item md={3} style={{ width: "100%" }}>
           {categoryItems.map((category, index) => (
             <div>
               <CategoryItem
@@ -90,22 +75,53 @@ const Listing = () => {
               />
             </div>
           ))}
-        </div>
-        <div
-          style={{
-            display: "flex",
-            marginTop: "30px",
-            justifyContent: "space-between",
-            flexWrap: "wrap",
-          }}
-        >
-          {cardData.map((option) => (
-            <div style={{ width: "290px" }}>
+          {/* for price */}
+          <Box>
+            <Typography variant="h6">Price Range</Typography>
+            <Slider
+              getAriaLabel={() => "Price"}
+              defaultValue={500}
+              // value={}
+              // onChange={}
+              valueLabelDisplay="auto"
+              // getAriaValueText={}
+              disableSwap
+            />
+          </Box>
+        </Grid>
+        <Grid item xs={12} md={9}>
+          <Box paddingBottom={1} paddingRight={1}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Sort by</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                // value={}
+                label="Age"
+                // onChange={handleChange}
+              >
+                <MenuItem value={10}>Most Popular</MenuItem>
+                <MenuItem value={20}>Highest Price</MenuItem>
+                <MenuItem value={30}>Lowest Price</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "space-between",
+            }}
+          >
+            {cardData.map((option, index) => (
               <Card option={option} />
-            </div>
-          ))}
-        </div>
-      </div>
+            ))}
+          </div>
+          <Pagination count={6} variant="outlined" shape="rounded" />
+        </Grid>
+      </Grid>
+      <Footer/>
     </div>
   );
 };

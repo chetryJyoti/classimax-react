@@ -11,13 +11,14 @@ const useStyles = makeStyles({
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
     padding: "16px",
     marginBottom: "32px",
+    width:'98%'
   },
   cardImg: {
     width: "100%",
   },
   productMeta: {
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "space-between",
     margin: "16px 0",
   },
   productRatings: {
@@ -70,7 +71,7 @@ const Card = ({ option }) => {
               {option.date}
             </span>
           </div>
-          <Typography variant="body1">
+          <Typography variant="body1" >
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo,
             aliquam!
           </Typography>

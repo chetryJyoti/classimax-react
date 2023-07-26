@@ -22,9 +22,6 @@ const Navbarheader = () => {
     { value: 9, name: "User Profile", loc: "/userProfile" },
     { value: 10, name: "404 Page", loc: "/notFound" },
     { value: 11, name: "Package ", loc: "/package" },
-    { value: 12, name: "Single Page", loc: "/singlePage" },
-    { value: 13, name: "Store Single", loc: "/storeSingle" },
-    { value: 14, name: "Single Post", loc: "/singlePost" },
     { value: 15, name: "Blog", loc: "/blog" },
   ];
 
