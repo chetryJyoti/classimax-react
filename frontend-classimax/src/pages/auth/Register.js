@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { TextField, Button, FormControlLabel, Checkbox } from "@mui/material";
+import { TextField, Button, FormControlLabel, Checkbox, Typography } from "@mui/material";
 import Navbarheader from "../../components/Navbar/Navbarheader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useStyles from "./AuthStyles";
 
 import { ToastContainer, toast } from "react-toastify";
 const Register = () => {
+  const navigate = useNavigate();
   const classes = useStyles();
   const [formData, setFormData] = useState({
     email: "",
@@ -32,11 +33,9 @@ const Register = () => {
     event.preventDefault();
 
     if (!acceptTerms) {
-      // User has not accepted the terms and conditions, prevent form submission
       return;
     }
     if (!isPasswordMatch()) {
-      // Passwords do not match, display an error message and prevent form submission
       toast.error("Passwords do not match!", {
         position: "top-right",
         autoClose: 5000,
@@ -57,24 +56,21 @@ const Register = () => {
         password: password,
       };
 
-      const response = await axios.post("http://localhost:3500/users", 
-        userData,
-      );
-
-      // Handle successful registration here, e.g., show a success message, redirect to a success page, etc.
-      console.log("Registration successful:", response.data);
-      toast.success("Registration successful!", {
+      const response = await axios.post("http://localhost:3500/users",userData);
+      // console.log("Registration successful:", response.data);
+      toast.success(response.data.message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 500,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
       });
+      setTimeout(() => {
+        navigate("/login");
+      }, 600);
     } catch (error) {
-      // Handle registration error here, e.g., show an error message, log the error, etc.
-
-      console.error("Registration failed:", error.response.data.message);
+      // console.error("Registration failed:", error.response.data.message);
       toast.error(error.response.data.message, {
         position: "top-right",
         autoClose: 5000,

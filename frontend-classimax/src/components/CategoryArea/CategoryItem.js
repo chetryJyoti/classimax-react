@@ -47,7 +47,7 @@ const CategoryItem = ({ iconClass, title, items, background, boxShadow }) => {
 
           <Typography variant="h6">{title}</Typography>
         </div>
-        <Typography className="category-list">
+        <div className="category-list">
           {items.map((item, index) => (
             <Typography
               key={index}
@@ -64,7 +64,7 @@ const CategoryItem = ({ iconClass, title, items, background, boxShadow }) => {
               <span>{item.count}</span>
             </Typography>
           ))}
-        </Typography>
+        </div>
       </CardContent>
     </Card>
   );

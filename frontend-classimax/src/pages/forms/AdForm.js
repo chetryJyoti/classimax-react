@@ -1,4 +1,6 @@
-import React from "react";
+//
+
+import React, { useState } from "react";
 import useStyles from "./FormStyles";
 
 import {
@@ -16,16 +18,80 @@ import {
   Typography,
 } from "@mui/material";
 
-
 const AdForm = () => {
   const classes = useStyles();
+  const [formData, setFormData] = useState({
+    title: "",
+    category: "",
+    adType: "personal",
+    price: "",
+    negotiable: false,
+    description: "",
+    // seller info
+    contactName: "",
+    contactNumber: "",
+    contactEmail: "",
+    contactAddress: "",
+    premiumAdOption: "regular",
+  });
+
+  const handleChange = (event) => {
+    const { name, value, type, checked } = event.target;
+    const newValue = type === "checkbox" ? checked : value;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: newValue,
+    }));
+  };
+  // Handle form submission
+  const submitAdListing = async (event) => {
+    event.preventDefault();
+
+    // Perform basic form validation
+    // if (
+    //   !formData.title ||
+    //   !formData.category ||
+    //   !formData.price ||
+    //   !formData.contactName ||
+    //   !formData.contactNumber
+    // ) {
+    //   alert("Please fill in all required fields.");
+    //   return;
+    // }
+
+    try {
+      console.log(formData);
+      // Replace the following URL with your actual ad listing endpoint
+      // const response = await axios.post(
+      //   "http://localhost:3500/adlisting",
+      //   formData
+      // );
+
+      // Handle successful ad posting here
+      // console.log("Ad posted successfully:", response.data);
+      // Show a success message to the user
+      // alert("Ad posted successfully!");
+
+      // Optionally, redirect the user to a success page or reset the form fields
+      // Example: history.push("/success");
+      // Example: setFormData({ title: "", category: "", ... });
+    } catch (error) {
+      // Handle ad posting error here
+      console.error("Failed to post ad:", error);
+      // Show an error message to the user
+      alert("Failed to post ad. Please try again later.");
+    }
+  };
   return (
-    <form className={classes.formContainer}>
+    <form className={classes.formContainer} onSubmit={submitAdListing}>
       <Typography variant="h6">Post Your ad</Typography>
       <Grid container spacing={2} marginBottom={4}>
         <Grid item xs={12} md={6}>
           <Typography variant="subtitle1">Title Of Ad:</Typography>
           <TextField
+            name="title"
+            value={formData.title}
+            onChange={handleChange}
             variant="outlined"
             className={classes.formField}
             fullWidth
@@ -36,24 +102,31 @@ const AdForm = () => {
           <Typography variant="subtitle1">Select Ad Category:</Typography>
           <FormControl className={classes.formField} fullWidth>
             <InputLabel id="inputGroupSelect">Select category</InputLabel>
-            <Select id="inputGroupSelect">
-              <MenuItem value={1}>Select category</MenuItem>
-              <MenuItem value={2}>Laptops</MenuItem>
-              <MenuItem value={3}>iphone</MenuItem>
-              <MenuItem value={4}>microsoft</MenuItem>
-              <MenuItem value={5}>monitors</MenuItem>
-              <MenuItem value={6}>11inch Macbook Air</MenuItem>
-              <MenuItem value={7}>Study Table Combo</MenuItem>
-              <MenuItem value={8}>11inch Macbook Air</MenuItem>
-              <MenuItem value={9}>Study Table Combo</MenuItem>
-              <MenuItem value={10}>11inch Macbook Air</MenuItem>
+            <Select
+              id="inputGroupSelect"
+              labelId="inputGroupSelect"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+            >
+              <MenuItem value={"default"}>Select category</MenuItem>
+              <MenuItem value={"Laptop"}>Laptops</MenuItem>
+              <MenuItem value={"Iphone"}>Iphones</MenuItem>
+              <MenuItem value={"Monitors"}>Monitors</MenuItem>
+              <MenuItem value={"Tv"}>Tv</MenuItem>
+              <MenuItem value={"Electronics"}>Electronics</MenuItem>
+              <MenuItem value={"Android"}>Android</MenuItem>
             </Select>
           </FormControl>
         </Grid>
         <Grid item xs={12} md={6}>
           <Typography variant="subtitle1">Ad type:</Typography>
           <FormControl component="fieldset" className={classes.formField}>
-            <RadioGroup name="itemName">
+            <RadioGroup
+              name="adType"
+              value={formData.adType} // Link the value to the formData state
+              onChange={handleChange} // Link the handleChange function
+            >
               <FormControlLabel
                 value="personal"
                 control={<Radio color="primary" />}
@@ -75,10 +148,19 @@ const AdForm = () => {
               variant="outlined"
               placeholder="Price"
               id="price"
+              value={formData.price}
+              onChange={handleChange}
               className={classes.price}
             />
             <FormControlLabel
-              control={<Checkbox style={{ margin: "0 4px" }} />}
+              control={
+                <Checkbox
+                  style={{ margin: "0 4px" }}
+                  name="negotiable"
+                  value={formData.negotiable}
+                  onChange={handleChange}
+                />
+              }
               label="Negotiable"
               className={classes.price}
             />
@@ -87,15 +169,18 @@ const AdForm = () => {
         <Grid item xs={12} md={6}>
           <Typography variant="subtitle1">Description:</Typography>
           <TextField
+            name="description"
             multiline
             rows={7}
             variant="outlined"
             className={classes.formField}
+            value={formData.description}
+            onChange={handleChange}
             fullWidth
             placeholder="Write details about your product"
           />
         </Grid>
-
+        {/* images upload section  */}
         <Grid item xs={12} md={6}>
           <div className={classes.uploadContainer}>
             <span className="d-block font-weight-bold text-dark">
@@ -118,8 +203,11 @@ const AdForm = () => {
           <Typography variant="subtitle1">Contact Name:</Typography>
           <TextField
             variant="outlined"
+            name="contactName"
             className={classes.formField}
             fullWidth
+            value={formData.contactName}
+            onChange={handleChange}
             placeholder="Contact name"
           />
         </Grid>
@@ -127,17 +215,23 @@ const AdForm = () => {
           <Typography variant="subtitle1">Contact Number:</Typography>
           <TextField
             variant="outlined"
+            name="contactNumber"
             className={classes.formField}
             fullWidth
             placeholder="Contact number"
+            value={formData.contactNumber}
+            onChange={handleChange}
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <Typography variant="subtitle1">Contact email:</Typography>
           <TextField
             variant="outlined"
+            name="contactEmail"
             className={classes.formField}
             fullWidth
+            value={formData.contactEmail}
+            onChange={handleChange}
             placeholder="name@youremail.com"
           />
         </Grid>
@@ -145,19 +239,26 @@ const AdForm = () => {
           <Typography variant="subtitle1">Contact Address:</Typography>
           <TextField
             variant="outlined"
+            name="contactAddress"
             className={classes.formField}
             fullWidth
             placeholder="your address"
+            value={formData.contactAddress}
+            onChange={handleChange}
           />
         </Grid>
       </Grid>
       {/* payment section */}
       <Typography variant="h6">Make your Ad Featured</Typography>
       <Grid container spacing={2} marginBottom={4}>
-      <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6}>
           <Typography variant="subtitle1">Preminum Ad Options:</Typography>
           <FormControl component="fieldset" className={classes.formField}>
-            <RadioGroup name="itemName">
+            <RadioGroup
+              name="premiumAdOption"
+              value={formData.premiumAdOption}
+              onChange={handleChange}
+            >
               <FormControlLabel
                 value="regular"
                 control={<Radio color="primary" />}
@@ -177,7 +278,9 @@ const AdForm = () => {
           </FormControl>
         </Grid>
       </Grid>
-      <Button type="submit" variant="contained">Post your Ad</Button>
+      <Button type="submit" variant="contained">
+        Post your Ad
+      </Button>
     </form>
   );
 };

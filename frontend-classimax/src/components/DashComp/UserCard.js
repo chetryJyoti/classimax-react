@@ -34,7 +34,7 @@ const UserCard = ({useDetails}) => {
           <Typography variant="h6" color="text.secondary" gutterBottom>
            {useDetails.username}
           </Typography>
-          <Typography sx={{ fontSize: 14 }} component="div">
+          <Typography sx={{ fontSize: 14 }}>
             {useDetails.email}
           </Typography>
         </CardContent>
