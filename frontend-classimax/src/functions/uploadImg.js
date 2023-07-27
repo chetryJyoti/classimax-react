@@ -2,8 +2,8 @@ import AWS from "aws-sdk";
 
 AWS.config.update({
   region: "ap-south-1",
-  accessKeyId: "AKIA2ADTTCSO66RZMUNS",
-  secretAccessKey:"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",
+  accessKeyId: "",
+  secretAccessKey:"",
 });
 const uploadImageToS3 = async (file) => {
     const s3 = new AWS.S3();
