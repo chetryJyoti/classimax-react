@@ -1,8 +1,7 @@
-//
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useStyles from "./FormStyles";
-
+import uploadImageToS3 from "../../functions/uploadImg";
+import { ToastContainer, toast } from "react-toastify";
 import {
   TextField,
   Select,
@@ -20,6 +19,17 @@ import {
 
 const AdForm = () => {
   const classes = useStyles();
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [imageLinks, setImageLinks] = useState([]);
+
+  useEffect(() => {
+    console.log("Updated image links:", imageLinks);
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      images: imageLinks,
+    }));
+  }, [imageLinks]);
+
   const [formData, setFormData] = useState({
     title: "",
     category: "",
@@ -27,6 +37,7 @@ const AdForm = () => {
     price: "",
     negotiable: false,
     description: "",
+    images: imageLinks,
     // seller info
     contactName: "",
     contactNumber: "",
@@ -34,6 +45,36 @@ const AdForm = () => {
     contactAddress: "",
     premiumAdOption: "regular",
   });
+
+  //serverless images upload to s3 bucket
+  const handleImgFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedImage(file);
+  };
+  const uploadImage = async () => {
+    if (selectedImage) {
+      try {
+        if (imageLinks.length >= 6) {
+          console.error("You can only upload up to 6 files.");
+          toast.error("max 6 files can only be uploaded", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        } else {
+          const imageUrl = await uploadImageToS3(selectedImage);
+          setImageLinks((prevImageLinks) => [...prevImageLinks, imageUrl]);
+        }
+      } catch (error) {
+        console.error("Image upload failed:", error);
+      }
+    } else {
+      console.error("Please select an image file.");
+    }
+  };
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
@@ -47,18 +88,6 @@ const AdForm = () => {
   const submitAdListing = async (event) => {
     event.preventDefault();
 
-    // Perform basic form validation
-    // if (
-    //   !formData.title ||
-    //   !formData.category ||
-    //   !formData.price ||
-    //   !formData.contactName ||
-    //   !formData.contactNumber
-    // ) {
-    //   alert("Please fill in all required fields.");
-    //   return;
-    // }
-
     try {
       console.log(formData);
       // Replace the following URL with your actual ad listing endpoint
@@ -66,15 +95,6 @@ const AdForm = () => {
       //   "http://localhost:3500/adlisting",
       //   formData
       // );
-
-      // Handle successful ad posting here
-      // console.log("Ad posted successfully:", response.data);
-      // Show a success message to the user
-      // alert("Ad posted successfully!");
-
-      // Optionally, redirect the user to a success page or reset the form fields
-      // Example: history.push("/success");
-      // Example: setFormData({ title: "", category: "", ... });
     } catch (error) {
       // Handle ad posting error here
       console.error("Failed to post ad:", error);
@@ -85,6 +105,7 @@ const AdForm = () => {
   return (
     <form className={classes.formContainer} onSubmit={submitAdListing}>
       <Typography variant="h6">Post Your ad</Typography>
+      <ToastContainer />
       <Grid container spacing={2} marginBottom={4}>
         <Grid item xs={12} md={6}>
           <Typography variant="subtitle1">Title Of Ad:</Typography>
@@ -183,16 +204,48 @@ const AdForm = () => {
         {/* images upload section  */}
         <Grid item xs={12} md={6}>
           <div className={classes.uploadContainer}>
-            <span className="d-block font-weight-bold text-dark">
-              Drop files anywhere to upload
-            </span>
-            <span className="d-block">or</span>
-            <span className="d-block">Maximum upload file size: 500 KB</span>
-            <input
-              type="file"
-              className="form-control-file d-none"
-              name="file"
-            />
+            <div>
+              <input type="file" name="file" onChange={handleImgFileChange} />
+              <Button
+                variant="outlined"
+                onClick={uploadImage}
+                style={{ marginTop: "4px" }}
+              >
+                Upload Image
+              </Button>
+            </div>
+            <div>
+              {imageLinks.length > 0 && (
+                <div>
+                  <div>
+                    <Typography variant="subtitle2" marginTop={1}>
+                      Uploaded Images:
+                    </Typography>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {imageLinks.map((imageUrl, index) => (
+                      <img
+                        key={index}
+                        src={imageUrl}
+                        alt={`Uploaded ${index + 1}`}
+                        style={{
+                          width: "60px",
+                          height: "60px",
+                          margin: "6px",
+                          borderRadius: "6px",
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </Grid>
       </Grid>

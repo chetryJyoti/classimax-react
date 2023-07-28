@@ -26,7 +26,7 @@ const useStyles = makeStyles({
       flexDirection: "column",
       textAlign: "center",
       marginTop: "28px",
-      height: "200px",
+      height: "260px",
     },
   });
 
