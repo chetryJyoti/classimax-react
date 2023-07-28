@@ -16,15 +16,15 @@ const login = asyncHandler(async (req, res) => {
   const foundUser = await User.findOne({ username }).exec();
 
   if (!foundUser || !foundUser.active) {
-    console.log("hi1");
+    // console.log("hi1");
     return res.status(401).json({ message: "Unauthorized" });
   }
 
   const match = await bcrypt.compare(password, foundUser.password);
 
   if (!match) {
-    console.log("hi2");
-    return res.status(401).json({ message: "Unauthorized" });
+    // console.log("hi2");
+    return res.status(401).json({ message: "Wrong password!!!" });
   }
 
   const accessToken = jwt.sign(
@@ -53,9 +53,10 @@ const login = asyncHandler(async (req, res) => {
   });
 
   // Send accessToken containing username and roles
-  console.log(foundUser.roles);
+  // console.log(foundUser.roles);
   const userRoles = foundUser.roles;
-  res.json({ userRoles, accessToken });
+  const userId = foundUser._id;
+  res.json({ userId,userRoles, accessToken });
 });
 
 // @desc Refresh
