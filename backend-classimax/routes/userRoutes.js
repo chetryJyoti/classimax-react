@@ -1,16 +1,21 @@
 const express = require("express");
 const router = express.Router();
-const usersController = require('../controllers/usersController')
+const usersController = require("../controllers/usersController");
 
+// verification of user
+const verifyJWT = require("../middleware/verifyJWT");
 
-// verification of user 
-// const verifyJWT = require("../middleware/verifyJWT")
+//normal users can create and update the users 
+router
+  .route("/")
+  .post(usersController.createNewUser)
+  .patch(usersController.updateUser);
 
-// router.use(verifyJWT)
-router.route('/')
-           .get(usersController.getAllUsers)
-           .post(usersController.createNewUser)
-           .patch(usersController.updateUser)
-           .delete(usersController.deleteUser)
+//but they cannot delete the users and see all the users
+router.use(verifyJWT);
+router
+  .route("/")
+  .get(usersController.getAllUsers)
+  .delete(usersController.deleteUser);
 
-module.exports = router
+module.exports = router;
