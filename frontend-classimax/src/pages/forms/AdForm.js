@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import useStyles from "./FormStyles";
 import uploadImageToS3 from "../../functions/uploadImg";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import showNotification from "../../functions/notification";
+import axios from "axios";
+import DeleteIcon from '@mui/icons-material/Delete';
 import {
   TextField,
   Select,
@@ -12,7 +15,6 @@ import {
   FormControlLabel,
   Radio,
   Button,
-  InputLabel,
   Checkbox,
   Typography,
 } from "@mui/material";
@@ -21,7 +23,28 @@ const AdForm = () => {
   const classes = useStyles();
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageLinks, setImageLinks] = useState([]);
+  //for removing images before uploading if selected
+  const [hoverIndex, setHoverIndex] = useState(null);
 
+  const initialFormData = {
+    // userid
+    //need to get this from the user information page----change this----note
+    user: "64be3ca2f5a97df29e2b90c0",
+    title: "",
+    category: "",
+    type: "personal",
+    price: "",
+    negotiable: false,
+    desc: "",
+    images: imageLinks,
+    // seller info
+    seller: "",
+    name: "",
+    number: "",
+    email: "",
+    address: "",
+    payment_option: "regular",
+  };
   useEffect(() => {
     console.log("Updated image links:", imageLinks);
     setFormData((prevFormData) => ({
@@ -30,55 +53,49 @@ const AdForm = () => {
     }));
   }, [imageLinks]);
 
-  const [formData, setFormData] = useState({
-    title: "",
-    category: "",
-    adType: "personal",
-    price: "",
-    negotiable: false,
-    description: "",
-    images: imageLinks,
-    // seller info
-    contactName: "",
-    contactNumber: "",
-    contactEmail: "",
-    contactAddress: "",
-    premiumAdOption: "regular",
-  });
+  const [formData, setFormData] = useState(initialFormData);
 
   //serverless images upload to s3 bucket
   const handleImgFileChange = (event) => {
     const file = event.target.files[0];
     setSelectedImage(file);
   };
+
+  const handleRemoveImage = (event, index) => {
+    event.preventDefault();
+    setImageLinks((prevImageLinks) => {
+      const updatedLinks = [...prevImageLinks];
+      updatedLinks.splice(index, 1);
+      return updatedLinks;
+    });
+  };
   const uploadImage = async () => {
     if (selectedImage) {
       try {
         if (imageLinks.length >= 6) {
-          console.error("You can only upload up to 6 files.");
-          toast.error("max 6 files can only be uploaded", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-          });
+          // console.error("You can only upload up to 6 files.");
+          showNotification("max 6 files can only be uploaded", "error");
         } else {
           const imageUrl = await uploadImageToS3(selectedImage);
           setImageLinks((prevImageLinks) => [...prevImageLinks, imageUrl]);
         }
       } catch (error) {
-        console.error("Image upload failed:", error);
+        // console.error("Image upload failed:", error);
+        showNotification("Image upload failed", "error");
       }
     } else {
-      console.error("Please select an image file.");
+      showNotification("Please select an image file.", "error");
     }
   };
 
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
-    const newValue = type === "checkbox" ? checked : value;
+    const newValue =
+      name === "price" || name === "number"
+        ? parseInt(value)
+        : type === "checkbox"
+        ? checked
+        : value;
     setFormData((prevFormData) => ({
       ...prevFormData,
       [name]: newValue,
@@ -89,17 +106,35 @@ const AdForm = () => {
     event.preventDefault();
 
     try {
-      console.log(formData);
-      // Replace the following URL with your actual ad listing endpoint
-      // const response = await axios.post(
-      //   "http://localhost:3500/adlisting",
-      //   formData
-      // );
+      // console.log(formData);
+      if (imageLinks.length <= 0) {
+        showNotification("please select atlease one image", "error");
+        return null;
+      } else {
+        const response = await axios.post(
+          process.env.REACT_APP_BASE_URL + "/adListing",
+          formData
+        );
+        console.log("response adListing", response.data);
+        showNotification(response.data.message, "success");
+        setFormData(initialFormData);
+        setImageLinks([]);
+      }
     } catch (error) {
-      // Handle ad posting error here
-      console.error("Failed to post ad:", error);
-      // Show an error message to the user
-      alert("Failed to post ad. Please try again later.");
+      if (error.response) {
+        showNotification(error.response.data.message, "error");
+      } else if (error.request) {
+        // Handle network errors
+        console.error("Network error:", error.request);
+        showNotification(
+          "Network error. Please check your internet connection.",
+          "error"
+        );
+      } else {
+        // Handle other errors
+        console.error("Error:", error.message);
+        showNotification("An error occured.Please try agin later", "error");
+      }
     }
   };
   return (
@@ -122,7 +157,7 @@ const AdForm = () => {
         <Grid item xs={12} md={6}>
           <Typography variant="subtitle1">Select Ad Category:</Typography>
           <FormControl className={classes.formField} fullWidth>
-            <InputLabel id="inputGroupSelect">Select category</InputLabel>
+            {/* <InputLabel id="inputGroupSelect">Select category</InputLabel> */}
             <Select
               id="inputGroupSelect"
               labelId="inputGroupSelect"
@@ -144,8 +179,8 @@ const AdForm = () => {
           <Typography variant="subtitle1">Ad type:</Typography>
           <FormControl component="fieldset" className={classes.formField}>
             <RadioGroup
-              name="adType"
-              value={formData.adType} // Link the value to the formData state
+              name="type"
+              value={formData.type} // Link the value to the formData state
               onChange={handleChange} // Link the handleChange function
             >
               <FormControlLabel
@@ -166,6 +201,7 @@ const AdForm = () => {
           <div className={classes.priceRow}>
             <TextField
               name="price"
+              type="number"
               variant="outlined"
               placeholder="Price"
               id="price"
@@ -190,12 +226,12 @@ const AdForm = () => {
         <Grid item xs={12} md={6}>
           <Typography variant="subtitle1">Description:</Typography>
           <TextField
-            name="description"
+            name="desc"
             multiline
             rows={7}
             variant="outlined"
             className={classes.formField}
-            value={formData.description}
+            value={formData.desc}
             onChange={handleChange}
             fullWidth
             placeholder="Write details about your product"
@@ -230,17 +266,46 @@ const AdForm = () => {
                     }}
                   >
                     {imageLinks.map((imageUrl, index) => (
-                      <img
+                      <div
                         key={index}
-                        src={imageUrl}
-                        alt={`Uploaded ${index + 1}`}
                         style={{
-                          width: "60px",
-                          height: "60px",
+                          position: "relative",
                           margin: "6px",
-                          borderRadius: "6px",
+                          cursor: "pointer",
                         }}
-                      />
+                        onMouseEnter={() => setHoverIndex(index)}
+                        onMouseLeave={() => setHoverIndex(null)}
+                      >
+                        <img
+                          src={imageUrl}
+                          alt={`Uploaded ${index + 1}`}
+                          style={{
+                            width: "60px",
+                            height: "60px",
+                            borderRadius: "6px",
+                          }}
+                        />
+                        {hoverIndex === index && (
+                          <Button
+                            onClick={(event) => handleRemoveImage(event,index)}
+                            variant="outlined"
+                            color="error"
+                            size="small"
+                            style={{
+                              position: "absolute",
+                              textAlign:'center',
+                              cursor:'pointer',
+                              top: '16px',
+                              right: 0,
+                              // backgroundColor: "gray",
+                              border: "none",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <DeleteIcon color="error" fontSize="large"/>
+                          </Button>
+                        )}
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -256,10 +321,10 @@ const AdForm = () => {
           <Typography variant="subtitle1">Contact Name:</Typography>
           <TextField
             variant="outlined"
-            name="contactName"
+            name="name"
             className={classes.formField}
             fullWidth
-            value={formData.contactName}
+            value={formData.name}
             onChange={handleChange}
             placeholder="Contact name"
           />
@@ -268,11 +333,12 @@ const AdForm = () => {
           <Typography variant="subtitle1">Contact Number:</Typography>
           <TextField
             variant="outlined"
-            name="contactNumber"
+            name="number"
             className={classes.formField}
             fullWidth
+            type="number"
             placeholder="Contact number"
-            value={formData.contactNumber}
+            value={formData.number}
             onChange={handleChange}
           />
         </Grid>
@@ -280,10 +346,11 @@ const AdForm = () => {
           <Typography variant="subtitle1">Contact email:</Typography>
           <TextField
             variant="outlined"
-            name="contactEmail"
+            name="email"
+            type="email"
             className={classes.formField}
             fullWidth
-            value={formData.contactEmail}
+            value={formData.email}
             onChange={handleChange}
             placeholder="name@youremail.com"
           />
@@ -292,11 +359,11 @@ const AdForm = () => {
           <Typography variant="subtitle1">Contact Address:</Typography>
           <TextField
             variant="outlined"
-            name="contactAddress"
+            name="address"
             className={classes.formField}
             fullWidth
             placeholder="your address"
-            value={formData.contactAddress}
+            value={formData.address}
             onChange={handleChange}
           />
         </Grid>
@@ -308,8 +375,8 @@ const AdForm = () => {
           <Typography variant="subtitle1">Preminum Ad Options:</Typography>
           <FormControl component="fieldset" className={classes.formField}>
             <RadioGroup
-              name="premiumAdOption"
-              value={formData.premiumAdOption}
+              name="payment_option"
+              value={formData.payment_option}
               onChange={handleChange}
             >
               <FormControlLabel

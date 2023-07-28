@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { TextField, Button, FormControlLabel, Checkbox, Typography } from "@mui/material";
+import { TextField, Button, FormControlLabel, Checkbox } from "@mui/material";
 import Navbarheader from "../../components/Navbar/Navbarheader";
 import { Link, useNavigate } from "react-router-dom";
 import useStyles from "./AuthStyles";
+import { ToastContainer } from "react-toastify";
+import showNotification from "../../functions/notification";
 
-import { ToastContainer, toast } from "react-toastify";
 const Register = () => {
   const navigate = useNavigate();
   const classes = useStyles();
@@ -35,15 +36,13 @@ const Register = () => {
     if (!acceptTerms) {
       return;
     }
+    if (!formData.email || !formData.password || !formData.confirmPassword) {
+      // console.log("test");
+      showNotification("All fields are required", "error");
+      return;
+    }
     if (!isPasswordMatch()) {
-      toast.error("Passwords do not match!", {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      showNotification("Passwords do't match!", "error");
       return;
     }
     const { email, password } = formData;
@@ -56,29 +55,18 @@ const Register = () => {
         password: password,
       };
 
-      const response = await axios.post("http://localhost:3500/users",userData);
+      const response = await axios.post(
+        "http://localhost:3500/users",
+        userData
+      );
       // console.log("Registration successful:", response.data);
-      toast.success(response.data.message, {
-        position: "top-right",
-        autoClose: 500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      showNotification(response.data.message, "success");
       setTimeout(() => {
         navigate("/login");
       }, 600);
     } catch (error) {
       // console.error("Registration failed:", error.response.data.message);
-      toast.error(error.response.data.message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      showNotification(error.response.data.message, "error");
     }
   };
 

@@ -1,10 +1,13 @@
 import React, { useState } from "react";
-import { TextField, Button, FormControlLabel, Checkbox } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 import useStyles from "./AuthStyles";
 import Navbarheader from "../../components/Navbar/Navbarheader";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import showNotification from "../../functions/notification";
+
 const Login = () => {
   const classes = useStyles();
   const navigate = useNavigate();
@@ -25,39 +28,49 @@ const Login = () => {
     event.preventDefault();
 
     const { username, password } = formData;
+    if (!username || !password) {
+      console.log("test");
+      showNotification("All fields are required", "error");
+      return;
+    }
+
     try {
       const userData = {
         username,
         password,
       };
-      const response = await axios.post("http://localhost:3500/auth", userData);
+      const response = await axios.post(
+        process.env.REACT_APP_BASE_URL + "/auth",
+        userData
+      );
 
       // Handle successful login here
       console.log("Login successful:", response.data);
-      toast.success("Successful login", {
-        position: "top-right",
-        autoClose: 500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-      setInterval(() => {
+      showNotification("Login success", "success");
+      setTimeout(() => {
         navigate("/");
       }, 600);
     } catch (error) {
-      console.error(
-        "Login failed:",
-        error.response?.data?.message || error.message
-      );
-      toast.error(error.response?.data?.message, {
-        position: "top-right",
-        autoClose: 500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
+      if (error.response) {
+        // Handle server response errors
+        console.error(
+          "Login failed:",
+          error.response.data.message || error.message
+        );
+
+        showNotification(error.response.data.message, "error");
+      } else if (error.request) {
+        // Handle network errors
+        console.error("Network error:", error.request);
+        showNotification(
+          "Network error. Please check your internet connection.",
+          "error"
+        );
+      } else {
+        // Handle other errors
+        console.error("Error:", error.message);
+        showNotification("An error occured.Please try agin later", "error");
+      }
     }
   };
 
@@ -69,9 +82,9 @@ const Login = () => {
         <div className={classes.formField}>
           <h3 className={classes.header}>Login</h3>
           <TextField
-            label="Username*"
             variant="outlined"
             fullWidth
+            label="username*"
             name="username"
             value={formData.username}
             onChange={handleChange}
@@ -80,8 +93,8 @@ const Login = () => {
         <div className={classes.formField}>
           <TextField
             type="password"
-            label="Password*"
             variant="outlined"
+            label="password*"
             fullWidth
             name="password"
             value={formData.password}

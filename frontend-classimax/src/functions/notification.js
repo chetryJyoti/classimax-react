@@ -1,10 +1,6 @@
-import React, { useEffect } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-
-const Notification = ({ message, type }) => {
-  useEffect(() => {
-    if (type === "success") {
+import { toast } from "react-toastify";
+const showNotification = (message, type) => {
+    if (type == "success") {
       toast.success(message, {
         position: "top-right",
         autoClose: 5000,
@@ -13,7 +9,7 @@ const Notification = ({ message, type }) => {
         pauseOnHover: true,
         draggable: true,
       });
-    } else if (type === "error") {
+    } else if (type == "error") {
       toast.error(message, {
         position: "top-right",
         autoClose: 5000,
@@ -23,9 +19,6 @@ const Notification = ({ message, type }) => {
         draggable: true,
       });
     }
-  }, [message, type]);
+  };
 
-  return <ToastContainer/>;
-};
-
-export default Notification;
+export default showNotification

@@ -25,10 +25,10 @@ const SearchBar = () => {
         <Grid item xs={12} sm={6} md={3}>
           <FormControl variant="outlined" fullWidth>
             <InputLabel>Category</InputLabel>
-            <Select label="Category">
+            <Select label="Category" >
               <MenuItem value="1">Top rated</MenuItem>
               <MenuItem value="2">Lowest Price</MenuItem>
-              <MenuItem value="4">Highest Price</MenuItem>
+              <MenuItem value="3">Highest Price</MenuItem>
             </Select>
           </FormControl>
         </Grid>
