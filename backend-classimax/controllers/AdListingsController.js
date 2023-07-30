@@ -6,7 +6,7 @@ const asyncHandler = require("express-async-handler");
 // Fetch all AdListings by pagenumber
 const getListing = asyncHandler(async (req, res) => {
   const page = parseInt(req.query.page) || 1; // Get the page number from the query parameter (default: 1)
-  const limit = 5; // Set the number of documents to fetch per page
+  const limit = 6; // Set the number of documents to fetch per page
 
   try {
     // Calculate the number of documents to skip based on the current page
@@ -37,7 +37,6 @@ const getListing = asyncHandler(async (req, res) => {
     });
   }
 });
-
 
 // Create a new AdListing
 const createListing = asyncHandler(async (req, res) => {
@@ -101,7 +100,6 @@ const createListing = asyncHandler(async (req, res) => {
     });
   }
 });
-
 
 // Update an existing AdListing by ID
 const updateListingById = asyncHandler(async (req, res) => {
@@ -198,11 +196,15 @@ const getAllListingByCategory = asyncHandler(async (req, res) => {
   console.log("categoryName:", category);
 
   try {
-    const adListings = await AdListing.find({ category }).populate("user seller");
+    const adListings = await AdListing.find({ category }).populate(
+      "user seller"
+    );
     console.log(adListings);
 
     if (adListings.length === 0) {
-      return res.status(404).json({ message: "AdListings not found for this category" });
+      return res
+        .status(404)
+        .json({ message: "AdListings not found for this category" });
     }
 
     res.status(200).json(adListings);
@@ -216,7 +218,15 @@ const getAllListingByCategory = asyncHandler(async (req, res) => {
 
 //Get the count of listings in each category
 const getCountOfListingsInEachCategory = asyncHandler(async (req, res) => {
-  const categories = ['Iphone','Electronics' ,'android', 'monitors', 'books', 'laptops', 'bed tables'];
+  const categories = [
+    "Laptops",
+    "Iphones",
+    "Androids",
+    "Monitors",
+    "Tvs",
+    "Electronics",
+    "BedTables",
+  ];
 
   try {
     const categoryCounts = await AdListing.aggregate([
@@ -227,36 +237,26 @@ const getCountOfListingsInEachCategory = asyncHandler(async (req, res) => {
       },
       {
         $group: {
-          _id: '$category', // Group by the 'category' field
+          _id: "$category", // Group by the 'category' field
           count: { $sum: 1 }, // Calculate the count of listings in each category
-        },
-      },
-      {
-        $project: {
-          _id: 0, // Exclude the default '_id' field from the result
-          category: '$_id', // Rename '_id' to 'category' for a more meaningful key
-          count: 1, // Include the 'count' field
         },
       },
     ]);
 
-    // Create an object to hold the response data with category names as keys and their counts as values
-    const responseData = {};
-    for (const item of categoryCounts) {
-      responseData[item.category] = item.count;
-    }
+    // Construct the response data in the desired format
+    const responseData = categoryCounts.map((item) => ({
+      name: item._id,
+      count: item.count,
+    }));
 
     res.status(200).json(responseData);
   } catch (error) {
     res.status(500).json({
-      message: 'Failed to get category counts',
+      message: "Failed to get category counts",
       error: error.message,
     });
   }
 });
-
-
-
 
 module.exports = {
   getListing,
@@ -266,5 +266,5 @@ module.exports = {
   getListingById,
   getAllListingByUser,
   getAllListingByCategory,
-  getCountOfListingsInEachCategory
+  getCountOfListingsInEachCategory,
 };
