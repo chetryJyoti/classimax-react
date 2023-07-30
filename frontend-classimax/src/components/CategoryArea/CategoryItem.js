@@ -48,7 +48,7 @@ const CategoryItem = ({ iconClass, title, items, background, boxShadow }) => {
           <Typography variant="h6">{title}</Typography>
         </div>
         <div className="category-list">
-          {items.map((item, index) => (
+          {items?.map((item, index) => (
             <Typography
               key={index}
               style={{

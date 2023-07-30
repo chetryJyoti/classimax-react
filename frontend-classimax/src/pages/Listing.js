@@ -1,127 +1,202 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Navbarheader from "../components/Navbar/Navbarheader";
 import SearchBar from "../components/SearchArea/SearchBar";
 import Card from "../components/Card";
-import about from "../assets/about/about.jpg";
 import CategoryItem from "../components/CategoryArea/CategoryItem";
-import Footer from "../components/Footer"
-import { Box, Grid, Pagination, Slider, Typography,MenuItem,Select,InputLabel,FormControl } from "@mui/material";
-const cardData = [
-  {
-    value: about,
-    name: "11inch Macbook Air",
-    category: "Electronics",
-    date: "26th December",
-    rating: "3",
-  },
-  {
-    value: about,
-    name: "Full Study Table Combo",
-    category: "Furnitures",
-    date: "28th December",
-    rating: "5",
-  },
-  {
-    value: about,
-    name: "Gaming Mouse",
-    category: "Electronics",
-    date: "29th December",
-    rating: "3",
-  },
-  {
-    value: about,
-    name: "Leather Sofa Set",
-    category: "Furnitures",
-    date: "30th December",
-    rating: "4",
-  },
-];
-const categoryItems = [
-  {
-    iconClass: "",
-    title: "Category 1",
-    items: [
-      { name: "Item 1", count: 10 },
-      { name: "Item 2", count: 5 },
-    ],
-    background: "#FF5733",
-  },
-  {
-    iconClass: "",
-    title: "Category 2",
-    items: [
-      { name: "Item 3", count: 15 },
-      { name: "Item 4", count: 20 },
-    ],
-  },
-];
+import Footer from "../components/Footer";
+import axios from "axios";
+import showNotification from "../functions/notification";
+import ClipLoader from "react-spinners/ClipLoader";
+
+import { Grid, Pagination, Typography } from "@mui/material";
+import { ToastContainer } from "react-toastify";
+
 const Listing = () => {
+  const [listings, setListings] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  //for category iteams available listing
+  const [categoryItems, setCategoryItems] = useState();
+
+  //get all category items
+  const getCategoryItems = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/adListing/categoryCounts`
+      );
+      // console.log("categoryItems", response.data);
+      if (response.data) {
+        setCategoryItems(response.data);
+      }
+      return response.data;
+    } catch (error) {
+      // console.error("Error fetching listings:", error);
+      showNotification("some error occured while fetching categories", "error");
+      return null;
+    }
+  };
+  useEffect(() => {
+    const fetchListings = async () => {
+      const data = await getAllListings(pageNumber);
+      if (data) {
+        // console.log("data:", data.adListings);
+        setListings(data.adListings);
+        setTotalPages(data.totalPages);
+        setTotalCount(data.totalCount);
+      }
+    };
+
+    fetchListings();
+  }, [pageNumber]);
+
+  useEffect(() => {
+    getCategoryItems();
+  }, []);
+
+  // console.log("listings:", listings);
+  const getAllListings = async (pageNumber) => {
+    try {
+      setLoading(true);
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/adListing`,
+        {
+          params: {
+            page: pageNumber,
+          },
+        }
+      );
+      // console.log(response.data);
+      setLoading(false);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching listings:", error);
+      showNotification("some error occured", "error");
+      return null;
+    }
+  };
+
+  const handlePageChange = (event, newPage) => {
+    setPageNumber(newPage);
+  };
+
+  // Handler function to handle the search
+  const handleSearch = (searchQuery, sortOrder, location) => {
+    const filteredListings = listings.filter((listing) => {
+      const isMatchingSearchQuery =
+        listing.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        listing.desc.toLowerCase().includes(searchQuery.toLowerCase());
+
+      const isMatchingLocation =
+        location === "" || listing.location === location;
+
+      return isMatchingSearchQuery &&  isMatchingLocation;
+    });
+
+    // Sort the filtered listings based on the sortOrder
+    if (sortOrder === "lowestToHighest") {
+      filteredListings.sort((a, b) => a.price - b.price);
+    } else if (sortOrder === "highestToLowest") {
+      filteredListings.sort((a, b) => b.price - a.price);
+    }
+
+    // Update the state with filtered and sorted listings
+    setListings(filteredListings);
+  };
+
   return (
     <div>
       <Navbarheader />
-      <SearchBar />
+      <SearchBar onSearch={handleSearch} />
+      <ToastContainer />
       <Grid container spacing={2} padding={4} marginTop={6}>
         <Grid item md={3} style={{ width: "100%" }}>
-          {categoryItems.map((category, index) => (
-            <div>
-              <CategoryItem
-                style={{ padding: "0" }}
-                key={index}
-                iconClass={category?.iconClass}
-                title={category.title}
-                items={category.items}
-                background={category?.background}
-                boxShadow={category?.boxShadow}
-              />
-            </div>
-          ))}
-          {/* for price */}
-          <Box>
-            <Typography variant="h6">Price Range</Typography>
-            <Slider
-              getAriaLabel={() => "Price"}
-              defaultValue={500}
-              // value={}
-              // onChange={}
-              valueLabelDisplay="auto"
-              // getAriaValueText={}
-              disableSwap
-            />
-          </Box>
+          <CategoryItem
+            style={{ padding: "0" }}
+            iconClass=" "
+            title="All Categories"
+            items={categoryItems}
+            background="white"
+            boxShadow=""
+          />
         </Grid>
         <Grid item xs={12} md={9}>
-          <Box paddingBottom={1} paddingRight={1}>
-            <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Sort by</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                // value={}
-                label="Age"
-                // onChange={handleChange}
-              >
-                <MenuItem value={10}>Most Popular</MenuItem>
-                <MenuItem value={20}>Highest Price</MenuItem>
-                <MenuItem value={30}>Lowest Price</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-            }}
-          >
-            {cardData.map((option, index) => (
-              <Card option={option} />
-            ))}
+          {!loading && listings.length == 0 && (
+            <div
+              style={{
+                textAlign: "center",
+                marginTop: "120px",
+                marginBottom: "120px",
+              }}
+            >
+              <Typography variant="h6"> No Products found!!!</Typography>
+            </div>
+          )}
+          {loading && (
+            <div
+              style={{
+                textAlign: "center",
+                marginTop: "120px",
+                marginBottom: "120px",
+              }}
+            >
+              <ClipLoader
+                color="blue"
+                loading={loading}
+                size={60}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+              />
+            </div>
+          )}
+          {!loading && (
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "space-between",
+              }}
+            >
+              {listings?.map((option, index) => (
+                <Card
+                  key={listings._id}
+                  value={
+                    option?.images[0] ||
+                    "https://i.pinimg.com/originals/70/84/f4/7084f4182630ae4bd2bcc9cbaa831d6e.png"
+                  }
+                  name={option?.title || "N/A"}
+                  category={option?.category || "N/A"}
+                  date={
+                    new Date(option?.createdAt)?.toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "numeric",
+                      day: "numeric",
+                    }) || "N/A"
+                  }
+                  desc={option?.desc || "N/A"}
+                  price={option?.price || "N/A"}
+                  rating="4"
+                />
+              ))}
+            </div>
+          )}
+          <div style={{ marginTop: "6px" }}>
+            <Pagination
+              count={totalPages}
+              page={pageNumber}
+              variant="outlined"
+              shape="rounded"
+              onChange={handlePageChange}
+            />
+            <Typography variant="h6" marginTop={4}>
+              Available Listings: {totalCount}
+            </Typography>
           </div>
-          <Pagination count={6} variant="outlined" shape="rounded" />
         </Grid>
       </Grid>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

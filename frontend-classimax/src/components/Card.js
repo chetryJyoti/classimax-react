@@ -34,6 +34,7 @@ const useStyles = makeStyles({
         marginRight: "8px",
       },
     },
+    marginTop:"10px"
   },
   ratingStars: {
     color: "blue",
@@ -46,9 +47,9 @@ const useStyles = makeStyles({
   }
 });
 
-const Card = ({ option }) => {
+const Card = (option ) => {
   const classes = useStyles();
-
+  // console.log("option",option);
   return (
     <Grid item xs={12} sm={6} md={4}>
       <div className={classes.productItem}>
@@ -56,6 +57,7 @@ const Card = ({ option }) => {
           <img
             className={classes.cardImg}
             src={option.value}
+            style={{width:"200px",height:"130px"}}
             alt="Card image cap"
           />
         </div>
@@ -71,9 +73,9 @@ const Card = ({ option }) => {
               {option.date}
             </span>
           </div>
+          <Typography variant="h6">Rs:{option?.price}</Typography>
           <Typography variant="body1" >
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo,
-            aliquam!
+            {option.desc}
           </Typography>
           <div className={classes.productRatings}>
             <ul>

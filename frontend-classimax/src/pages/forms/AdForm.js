@@ -166,12 +166,13 @@ const AdForm = () => {
               onChange={handleChange}
             >
               <MenuItem value={"default"}>Select category</MenuItem>
-              <MenuItem value={"Laptop"}>Laptops</MenuItem>
-              <MenuItem value={"Iphone"}>Iphones</MenuItem>
+              <MenuItem value={"Laptops"}>Laptops</MenuItem>
+              <MenuItem value={"Iphones"}>Iphones</MenuItem>
+              <MenuItem value={"Androids"}>Android</MenuItem>
               <MenuItem value={"Monitors"}>Monitors</MenuItem>
-              <MenuItem value={"Tv"}>Tv</MenuItem>
+              <MenuItem value={"Tvs"}>Tv</MenuItem>
               <MenuItem value={"Electronics"}>Electronics</MenuItem>
-              <MenuItem value={"Android"}>Android</MenuItem>
+              <MenuItem value={"BedTables"}>BedTables</MenuItem>
             </Select>
           </FormControl>
         </Grid>

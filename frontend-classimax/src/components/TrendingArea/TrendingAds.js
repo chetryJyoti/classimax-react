@@ -49,7 +49,15 @@ const TrendingAds = () => {
           >
             {trendingData.map((option) => (
               <Grid container spacing={3} key={option.value}>
-                <Card option={option} />
+                <Card
+                  key={option.date}
+                  value={option.value}
+                  name={option?.name || "N/A"}
+                  category={option?.category || "N/A"}
+                  date={option?.date}
+                  desc={option?.desc || "N/A"}
+                  rating={option?.rating}
+                />
               </Grid>
             ))}
           </Carousel>
@@ -63,14 +71,30 @@ const TrendingAds = () => {
             <div className={classes.carouselContainer}>
               <Grid container spacing={3}>
                 {trendingData.slice(0, 3).map((option) => (
-                  <Card key={option.value} option={option} />
+                  <Card
+                    key={option.date}
+                    value={option.value}
+                    name={option?.name || "N/A"}
+                    category={option?.category || "N/A"}
+                    date={option?.date}
+                    desc={option?.desc || "N/A"}
+                    rating={option?.rating}
+                  />
                 ))}
               </Grid>
             </div>
             <div className={classes.carouselContainer}>
               <Grid container spacing={3}>
                 {trendingData.slice(3, 6).map((option) => (
-                  <Card key={option.value} option={option} />
+                  <Card
+                    key={option.date}
+                    value={option.value}
+                    name={option?.name || "N/A"}
+                    category={option?.category || "N/A"}
+                    date={option?.date}
+                    desc={option?.desc || "N/A"}
+                    rating={option?.rating}
+                  />
                 ))}
               </Grid>
             </div>

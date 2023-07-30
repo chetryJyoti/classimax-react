@@ -1,0 +1,36 @@
+
+[
+  {
+    "_id": "64c0ec20ac15b994338fb514",
+    "user": {
+      "_id": "64be3ca2f5a97df29e2b90c0",
+      "username": "jyoti1@gmail.com",
+      "password": "$2b$10$qIgmSEjD6PlqgrHtq4P.ROai75VFL9I7xAKdli7YCjMr7jJglP6ky",
+      "roles": ["admin"],
+      "active": true,
+      "__v": 1
+    },
+    "seller": {
+      "_id": "64bf61acda3e7d4046523c3c",
+      "name": "John Doe",
+      "email": "johndoe@example.com",
+      "number": 1234567890,
+      "address": "123 Main Street",
+      "__v": 0
+    },
+    "title": "iphone on sale4",
+    "category": "Electronics",
+    "type": "business",
+    "price": 5000,
+    "negotiable": false,
+    "desc": "This is a sample ad listing4.",
+    "images": [
+      "https://example.com/image1.jpg",
+      "https://example.com/image2.jpg"
+    ],
+    "payment_option": "regular",
+    "createdAt": "2023-07-26T09:49:20.364Z",
+    "updatedAt": "2023-07-26T09:49:20.364Z",
+    "__v": 0
+  }
+]

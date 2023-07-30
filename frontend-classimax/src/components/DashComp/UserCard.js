@@ -20,22 +20,27 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
   },
 }));
-const UserCard = ({useDetails}) => {
+const UserCard = ({ userDetails }) => {
   const classes = useStyles();
   const notify = () => toast("Editing profile!");
-  
+
   return (
     <Box sx={{ width: "100%" }}>
       <Card variant="outlined" className={classes.cardStyle}>
         <CardContent className={classes.cardStyle}>
           <Avatar sx={{ width: 100, height: 100, bgcolor: "gray" }}>
-            <Typography variant="h4">J</Typography>
+            <Typography variant="h4">
+              {userDetails?.username
+                ? userDetails?.username?.charAt(0).toUpperCase()
+                : ""}
+            </Typography>
           </Avatar>
+
           <Typography variant="h6" color="text.secondary" gutterBottom>
-           {useDetails.username}
+            {userDetails?.username}
           </Typography>
           <Typography sx={{ fontSize: 14 }}>
-            {useDetails.email}
+            UserId: {userDetails?._id}
           </Typography>
         </CardContent>
         <CardActions>
