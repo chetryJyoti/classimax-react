@@ -41,7 +41,7 @@ const login = asyncHandler(async (req, res) => {
   const refreshToken = jwt.sign(
     { username: foundUser.username },
     process.env.REFRESH_TOKEN_SECRET,
-    { expiresIn: "7d" }
+    { expiresIn: "15m" }
   );
 
   // Create secure cookie with refresh token
@@ -56,7 +56,8 @@ const login = asyncHandler(async (req, res) => {
   // console.log(foundUser.roles);
   const userRoles = foundUser.roles;
   const userId = foundUser._id;
-  res.json({ userId,userRoles, accessToken });
+  const userName = foundUser.username;
+  res.json({ userId,userRoles, accessToken,userName });
 });
 
 // @desc Refresh
@@ -93,7 +94,8 @@ const refresh = (req, res) => {
       );
       console.log(foundUser.roles);
       const userRoles = foundUser.roles;
-      res.json({ userRoles, accessToken });
+      const userName =foundUser.username
+      res.json({ userRoles, accessToken,userName });
     })
   );
 };
