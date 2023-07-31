@@ -2,15 +2,22 @@ import React, { useState } from "react";
 import { TextField, Button } from "@mui/material";
 import useStyles from "./AuthStyles";
 import Navbarheader from "../../components/Navbar/Navbarheader";
-import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import showNotification from "../../functions/notification";
+import axios from "../../api/axios";
+import useAuth from "../../hooks/useAuth";
+const LOGIN_URL = "/auth";
 
 const Login = () => {
   const classes = useStyles();
+  const { setAuth } = useAuth();
+  // handling user navigation
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.form?.pathname || "/";
+
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -39,16 +46,23 @@ const Login = () => {
         username,
         password,
       };
-      const response = await axios.post(
-        process.env.REACT_APP_BASE_URL + "/auth",
-        userData
-      );
-
+      const response = await axios.post(LOGIN_URL, userData, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      const userId = response?.data?.userId;
+      console.log("userId:",userId);
+      const userName = response?.data?.userName;
+      const accessToken = response?.data?.accessToken;
+      const roles = response?.data?.userRoles;
+      // console.log('accessToken:',accessToken);
+      // console.log('roles:',roles);
       // Handle successful login here
-      console.log("Login successful:", response.data);
+      // console.log('userName:',userName);
+      setAuth({userId, userName, roles, accessToken });
       showNotification("Login success", "success");
       setTimeout(() => {
-        navigate("/");
+        navigate(from, { replace: true });
       }, 600);
     } catch (error) {
       if (error.response) {
@@ -76,7 +90,6 @@ const Login = () => {
 
   return (
     <>
-      <Navbarheader />
       <ToastContainer />
       <form className={classes.formContainer} onSubmit={handleSubmit}>
         <div className={classes.formField}>

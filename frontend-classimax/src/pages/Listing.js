@@ -108,7 +108,6 @@ const Listing = () => {
 
   return (
     <div>
-      <Navbarheader />
       <SearchBar onSearch={handleSearch} />
       <ToastContainer />
       <Grid container spacing={2} padding={4} marginTop={6}>
@@ -196,7 +195,6 @@ const Listing = () => {
           </div>
         </Grid>
       </Grid>
-      <Footer />
     </div>
   );
 };

@@ -11,7 +11,7 @@ const useStyles = makeStyles({
     boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
     padding: "16px",
     marginBottom: "32px",
-    width:'98%'
+    width: "98%",
   },
   cardImg: {
     width: "100%",
@@ -34,20 +34,20 @@ const useStyles = makeStyles({
         marginRight: "8px",
       },
     },
-    marginTop:"10px"
+    marginTop: "10px",
   },
   ratingStars: {
     color: "blue",
     marginRight: "4px",
   },
-  iconText:{
-    display:'flex',
-    alignItems:'center',
-    justifyContent:'space-between'
-  }
+  iconText: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
 });
 
-const Card = (option ) => {
+const Card = (option) => {
   const classes = useStyles();
   // console.log("option",option);
   return (
@@ -57,7 +57,7 @@ const Card = (option ) => {
           <img
             className={classes.cardImg}
             src={option.value}
-            style={{width:"200px",height:"130px"}}
+            style={{ width: "200px", height: "130px" }}
             alt="Card image cap"
           />
         </div>
@@ -74,7 +74,19 @@ const Card = (option ) => {
             </span>
           </div>
           <Typography variant="h6">Rs:{option?.price}</Typography>
-          <Typography variant="body1" >
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: {
+                lg: 12,
+                md: 11,
+                sm: 10,
+                xs: 10,
+              },
+              wordWrap: "break-word",
+              width: "11rem",
+            }}
+          >
             {option.desc}
           </Typography>
           <div className={classes.productRatings}>

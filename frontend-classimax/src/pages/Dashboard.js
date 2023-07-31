@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import Navbarheader from "../components/Navbar/Navbarheader";
 import UserAdsCard from "../components/DashComp/UserAdsCard";
 import UserCard from "../components/DashComp/UserCard";
@@ -6,10 +6,18 @@ import { Typography, Grid } from "@mui/material";
 import Footer from "../components/Footer";
 import axios from "axios";
 import showNotification from "../functions/notification";
+import useAuth from "../hooks/useAuth";
 import { ToastContainer } from "react-toastify";
 
 const Dashboard = () => {
   const [userlistings, setUserListings] = useState([]);
+  const [userDetails, setUserDetails] = useState({});
+  // const [userId, setUserId] = useState();
+  const { auth } = useAuth();
+  useEffect(() => {
+    setUserDetails(auth);
+    // setUserId(auth.userId);
+  }, [auth]);
   // sample data from the api
   const productInfo = {
     _id: "64c0ec20ac15b994338fb514",
@@ -45,7 +53,7 @@ const Dashboard = () => {
   };
   //
   // 64be3ca2f5a97df29e2b90c0
-  const userId = "64be3ca2f5a97df29e2b90c0";
+  // const userId = userDetails.userId;
   // Fetch user details and listings by user ID
   const handleProductDlt = async (productId) => {
     try {
@@ -68,10 +76,11 @@ const Dashboard = () => {
     }
   };
   useEffect(() => {
+    console.log("userDetails:", userDetails.userId);
     const fetchListings = async () => {
       try {
         const listingsResponse = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}/adListing/user/${userId}`
+          `${process.env.REACT_APP_BASE_URL}/adListing/user/${userDetails.userId}`
         );
         setUserListings(listingsResponse.data);
         console.log("listingByUser:", listingsResponse.data);
@@ -80,36 +89,41 @@ const Dashboard = () => {
       }
     };
     fetchListings();
-  }, [userId]);
+  }, [userDetails]);
 
   return (
     <>
-      <Navbarheader />
       <div style={{ padding: "40px" }}>
         <Typography textAlign="center" variant="h4" marginBottom={1}>
           Your Ads
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6} md={4}>
-            <UserCard userDetails={userlistings[0]?.user} />
+            <UserCard {...userDetails} />
           </Grid>
           <Grid item xs={12} sm={6} md={8}>
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-            >
-              {userlistings.map((productInfo) => (
-                <UserAdsCard
-                  key={productInfo._id}
-                  productInfo={productInfo}
-                  onProductDlt={() => handleProductDlt(productInfo._id)}
-                />
-              ))}
-            </div>
+            {userlistings.length > 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "10px",
+                }}
+              >
+                {userlistings.map((productInfo) => (
+                  <UserAdsCard
+                    key={productInfo._id}
+                    productInfo={productInfo}
+                    onProductDlt={() => handleProductDlt(productInfo._id)}
+                  />
+                ))}
+              </div>
+            ) : (
+              <Typography variant="body1" textAlign='center' marginTop={4}>Your don't have any listed Products!!</Typography>
+            )}
           </Grid>
         </Grid>
       </div>
-
-      <Footer />
     </>
   );
 };

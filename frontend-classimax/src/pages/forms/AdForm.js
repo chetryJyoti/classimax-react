@@ -4,7 +4,8 @@ import uploadImageToS3 from "../../functions/uploadImg";
 import { ToastContainer } from "react-toastify";
 import showNotification from "../../functions/notification";
 import axios from "axios";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
+import useAuth from "../../hooks/useAuth";
 import {
   TextField,
   Select,
@@ -21,15 +22,17 @@ import {
 
 const AdForm = () => {
   const classes = useStyles();
+  const { auth } = useAuth();
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageLinks, setImageLinks] = useState([]);
   //for removing images before uploading if selected
   const [hoverIndex, setHoverIndex] = useState(null);
+  const [userId, setUserId] = useState();
 
   const initialFormData = {
     // userid
     //need to get this from the user information page----change this----note
-    user: "64be3ca2f5a97df29e2b90c0",
+    user: "",
     title: "",
     category: "",
     type: "personal",
@@ -45,6 +48,12 @@ const AdForm = () => {
     address: "",
     payment_option: "regular",
   };
+
+  useEffect(() => {
+    setUserId(auth.userId);
+    console.log("id:", auth.userId);
+  }, [auth]);
+
   useEffect(() => {
     console.log("Updated image links:", imageLinks);
     setFormData((prevFormData) => ({
@@ -54,6 +63,16 @@ const AdForm = () => {
   }, [imageLinks]);
 
   const [formData, setFormData] = useState(initialFormData);
+
+  // This useEffect will update formData.user whenever userId changes
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      user: userId,
+    }));
+  }, [formData.user]);
+
+  console.log("formData:", formData);
 
   //serverless images upload to s3 bucket
   const handleImgFileChange = (event) => {
@@ -288,22 +307,22 @@ const AdForm = () => {
                         />
                         {hoverIndex === index && (
                           <Button
-                            onClick={(event) => handleRemoveImage(event,index)}
+                            onClick={(event) => handleRemoveImage(event, index)}
                             variant="outlined"
                             color="error"
                             size="small"
                             style={{
                               position: "absolute",
-                              textAlign:'center',
-                              cursor:'pointer',
-                              top: '16px',
+                              textAlign: "center",
+                              cursor: "pointer",
+                              top: "16px",
                               right: 0,
                               // backgroundColor: "gray",
                               border: "none",
                               cursor: "pointer",
                             }}
                           >
-                            <DeleteIcon color="error" fontSize="large"/>
+                            <DeleteIcon color="error" fontSize="large" />
                           </Button>
                         )}
                       </div>

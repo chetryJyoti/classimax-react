@@ -11,6 +11,7 @@ const useStyles = makeStyles(() => ({
     background: "#333",
     color: "#fff",
     padding: "50px 30px",
+    marginTop:"60px"
   },
   about: {
     "& img": {

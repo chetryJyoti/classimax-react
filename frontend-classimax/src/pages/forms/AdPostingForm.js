@@ -7,7 +7,6 @@ const AdPostingForm = () => {
  
   return (
     <>
-      <Navbarheader />
       <AdForm />
     </>
   );

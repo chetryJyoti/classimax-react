@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { TextField, Button, FormControlLabel, Checkbox } from "@mui/material";
-import Navbarheader from "../../components/Navbar/Navbarheader";
 import { Link, useNavigate } from "react-router-dom";
 import useStyles from "./AuthStyles";
 import { ToastContainer } from "react-toastify";
@@ -72,7 +71,6 @@ const Register = () => {
 
   return (
     <>
-      <Navbarheader />
       <ToastContainer />
       <form className={classes.formContainer} onSubmit={handleSubmit}>
         <div className={classes.formField}>

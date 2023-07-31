@@ -12,6 +12,7 @@ import { makeStyles } from "@mui/styles";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 const useStyles = makeStyles(() => ({
   cardStyle: {
     display: "flex",
@@ -20,7 +21,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: "center",
   },
 }));
-const UserCard = ({ userDetails }) => {
+const UserCard = ( userDetails ) => {
   const classes = useStyles();
   const notify = () => toast("Editing profile!");
 
@@ -30,17 +31,17 @@ const UserCard = ({ userDetails }) => {
         <CardContent className={classes.cardStyle}>
           <Avatar sx={{ width: 100, height: 100, bgcolor: "gray" }}>
             <Typography variant="h4">
-              {userDetails?.username
-                ? userDetails?.username?.charAt(0).toUpperCase()
+              {userDetails?.userName
+                ? userDetails?.userName?.charAt(0).toUpperCase()
                 : ""}
             </Typography>
           </Avatar>
 
           <Typography variant="h6" color="text.secondary" gutterBottom>
-            {userDetails?.username}
+            {userDetails?.userName}
           </Typography>
           <Typography sx={{ fontSize: 14 }}>
-            UserId: {userDetails?._id}
+            UserId: {userDetails?.userId}
           </Typography>
         </CardContent>
         <CardActions>
